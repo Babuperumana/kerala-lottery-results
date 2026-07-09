@@ -1,59 +1,59 @@
-# 🎟️ Kerala State Lottery Live 1st Prize Tracker
+# Kerala State Lottery Live 1st Prize Tracker
 
-A real-time, automated web dashboard and background scraper that tracks and displays the Kerala State Lottery 1st prize winning ticket as the draw unfolds. It polls official feeds, parses live results, and displays them on a premium, responsive web interface.
-
----
-
-## ✨ Features
-
-- **🔄 Real-Time Live Scraping**: A background worker scans the official Blogger feed every 20 seconds for active lottery posts and parses the results dynamically.
-- **🏷️ Smart Text Extraction**: Automatically extracts the 1st prize winning ticket (e.g., `XX 123456`), draw date, draw code (e.g., `SS-527`), and lottery name (e.g., `Sthree Sakthi`) using Python's `BeautifulSoup4` and regex.
-- **💡 Responsive Modern Dashboard**: A dark-themed dashboard featuring ambient glowing orbs, a starry overlay, and a premium digital display.
-- **⚡ Active Polling & Transitions**: The web frontend auto-polls the local API endpoint every 30 seconds and transitions between the "Waiting" (pulsing) and "Winner Announced" (gold glowing) states with smooth CSS fade/blur effects.
-- **📜 History Grid**: Shows cards for the previous 3 completed lottery draws for quick reference.
-- **⚙️ Multi-thread Safe Execution**: Uses `APScheduler` to run the background job, carefully managed to prevent duplicate thread instantiation in Flask's debug environment.
+A web-based dashboard and scraper designed to monitor and display the Kerala State Lottery 1st prize winning numbers in real-time. It retrieves live results from target blog feeds, updates a local data cache, and serves a modern single-page dashboard.
 
 ---
 
-## 🛠️ Technology Stack
+## Features
+
+- **Live Scraping**: Runs a background worker that polls the Blogger feed every 20 seconds to fetch updates during active draw hours.
+- **Parsing and Extraction**: Extracts the first prize ticket number, date, draw code (e.g., SS-527), and name of the lottery using BeautifulSoup and regular expressions.
+- **Web Dashboard**: Displays the active draw status with a countdown timer showing the next automated refresh.
+- **State Handling**: Transitions automatically between a waiting state (when a draw is active but results are not yet published) and a completed state (when the winning ticket is extracted).
+- **Recent History**: Keeps track of the last three lottery draws.
+- **Background Scheduler**: Managed via APScheduler, configured to run safely within Flask's development server without spawning duplicate threads.
+
+---
+
+## Technology Stack
 
 ### Backend
-- **Python 3**: Core application logic.
-- **Flask**: Web server framework for serving the dashboard and API endpoint.
-- **APScheduler**: Manages the periodic background scraper tasks in a separate thread.
-- **BeautifulSoup4 & Requests**: Fetches and parses XHTML/XML blogger feeds for live results.
+- **Python 3**: Application runtime.
+- **Flask**: Serves the frontend web pages and API.
+- **APScheduler**: Manages the periodic scraping cycles.
+- **BeautifulSoup4 & Requests**: Handles fetching and parsing of HTML/feed data.
 
 ### Frontend
-- **HTML5 & Vanilla CSS3**: Fluid layouts, CSS custom variables, and keyframe animations for a premium user experience.
-- **Vanilla JavaScript**: Handles client-side API requests, countdown tickers, and state transitions.
-- **Google Fonts**: [Outfit](https://fonts.google.com/specimen/Outfit) for smooth UI copy and [Rajdhani](https://fonts.google.com/specimen/Rajdhani) for a bold digital lottery machine number aesthetic.
+- **HTML5 & CSS3**: Responsive styling, custom fonts, layout, and visual transitions.
+- **Vanilla JavaScript**: Controls the polling timer, fetches data, and updates page content.
+- **Google Fonts**: Uses Outfit for general layout text and Rajdhani for the large prize numbers.
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 ├── LotteryApp/
-│   ├── app.py              # Main Flask application with scheduler setup
-│   ├── scraper.py          # Blogger RSS parser & HTML parser logic
+│   ├── app.py              # Flask server and background scheduler
+│   ├── scraper.py          # Data fetching and parsing logic
 │   ├── templates/
 │   │   └── index.html      # Main dashboard HTML template
 │   ├── static/
-│   │   ├── style.css       # Custom styles, animations, & design tokens
-│   │   └── script.js       # Client polling, countdown & UI updates
+│   │   ├── style.css       # Layout styles and animations
+│   │   └── script.js       # Client-side polling and DOM updates
 │   └── data/
-│       └── result.json     # Cached result file containing active draw & history
-├── requirements.txt        # Project python packages list
-├── .gitignore              # Files to ignore in git repository
+│       └── result.json     # JSON cache containing active draw and history
+├── requirements.txt        # Python package dependencies
+├── .gitignore              # Git ignore rules
 └── README.md               # Project documentation
 ```
 
 ---
 
-## 🚀 Setup & Installation
+## Setup and Installation
 
 ### Prerequisites
-- Python 3.8+ installed on your system.
+- Python 3.8 or higher installed.
 
 ### Steps
 
@@ -80,27 +80,24 @@ A real-time, automated web dashboard and background scraper that tracks and disp
    pip install -r requirements.txt
    ```
 
-4. **Run the Application**
+4. **Run the Server**
    ```bash
    python LotteryApp/app.py
    ```
-   The application will start, launching both the background scraping daemon and the Flask web server on port `5000`.
+   This will start both the Flask web server on port `5000` and the background scraper thread.
 
-5. **Access the Dashboard**
-   Open your browser and navigate to:
-   [http://127.0.0.1:5000](http://127.0.0.1:5000)
+5. **Open the Dashboard**
+   Navigate to [http://127.0.0.1:5000](http://127.0.0.1:5000) in your web browser.
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
-The web application exposes a simple JSON API:
+### GET /api/result
 
-### `GET /api/result`
+Returns the current active draw status and a list of the three most recent historical draws.
 
-Returns the active draw state and a list of the 3 most recent historical draws.
-
-**Response Schema (`result.json`):**
+**Example Response:**
 ```json
 {
   "firstPrize": "ST 308060",
@@ -121,15 +118,15 @@ Returns the active draw state and a list of the 3 most recent historical draws.
 
 ---
 
-## ⏰ Schedule Details
+## Draw Schedule and Behavior
 
-Draw announcements in Kerala start around **3:00 PM IST** daily and conclude around **4:30 PM IST**.
-- During this window, if the scraper detects a post for today's lottery that hasn't published results yet, it displays a **"Waiting for Live Result..."** state on the screen with an active pulsing animation.
-- When the first prize winner is published on the feed, the site automatically receives the update, flashes the green/gold neon lighting, displays the number, and archives the previous active draw to the history view.
-- Outside of draw hours, the dashboard displays the latest available completed draw as the active display.
+Kerala State Lottery draws generally start around **3:00 PM IST** daily and conclude around **4:30 PM IST**.
+- During the draw window, if a blog post exists for the day's lottery but the final result is pending, the dashboard displays a "Waiting for Live Result..." status with a loading indicator.
+- Once the first prize winning ticket is published on the source feed, the scraper updates the JSON cache, the frontend displays the new prize number, and the previous active draw is added to the history view.
+- Outside of active draw hours, the dashboard displays the most recent completed draw.
 
 ---
 
-## ⚠️ Disclaimer
+## Disclaimer
 
-This application is for informational purposes only. It is an unofficial helper tool and is not associated with or endorsed by the Kerala State Lotteries Department. Always cross-verify the winning numbers with the official Kerala Government Gazette.
+This project is for informational purposes only. It is an unofficial helper tool and is not associated with, authorized, or endorsed by the Kerala State Lotteries Department. Always verify winning numbers with the official Kerala Government Gazette.
