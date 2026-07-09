@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Real-time live display for the Kerala State Lottery 1st Prize winner. Automatically updates as the draw happens.">
+    <title>Kerala Lottery Live 1st Prize Display</title>
+    <!-- Google Fonts: Outfit for clean body text, Rajdhani for bold numerical digital lookup look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Link to external stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="stars-overlay"></div>
+    <div class="glow-orb orange"></div>
+    <div class="glow-orb cyan"></div>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="live-tag">
+                <span class="live-dot"></span>
+                <span>LIVE DRAW</span>
+            </div>
+            <h1>Kerala State Lottery</h1>
+            <p id="active-lottery" class="subtitle">Today's Draw</p>
+            <div id="active-date" class="active-date-badge"></div>
+        </header>
+
+        <main class="result-card">
+            <div class="card-border-glow"></div>
+            <div class="prize-label">1ST PRIZE WINNING NUMBER</div>
+            
+            <div class="display-wrapper">
+                <!-- Glowing Prize Number / Waiting State -->
+                <div id="prize-number" class="prize-text state-waiting">Waiting for Live Result...</div>
+                
+                <!-- Pulsing Visual Ring (visible during waiting state) -->
+                <div id="waiting-spinner" class="pulse-ring-container">
+                    <div class="pulse-ring"></div>
+                    <div class="pulse-ring-inner"></div>
+                </div>
+            </div>
+
+            <!-- History Container -->
+            <div class="history-container">
+                <div class="history-title">Previous 3 Draws Results</div>
+                <div id="history-grid" class="history-grid">
+                    <div class="history-placeholder">Loading history...</div>
+                </div>
+            </div>
+
+            <div class="meta-footer">
+                <div class="meta-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>Updated: <strong id="update-time">Waiting...</strong></span>
+                </div>
+                
+                <div class="meta-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon spinner">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                    </svg>
+                    <span>Auto-refreshing in <strong id="countdown">30</strong>s</span>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>Draw broadcasts begin around 3:00 PM IST. Results are fetched directly from the live broadcast frames.</p>
+            <p class="disclaimer">Disclaimer: Please cross-verify all results with the official Kerala Government Gazette.</p>
+        </footer>
+    </div>
+
+    <!-- Link to Javascript file -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

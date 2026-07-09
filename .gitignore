@@ -1,0 +1,24 @@
+# Virtual environment
+venv/
+.venv/
+Env/
+env/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# App databases/runtime caches
+LotteryApp/data/result.json
+LotteryApp/temp_cycle.jpg
+LotteryApp/temp_capture.jpg
+LotteryApp/frame.jpg
+LotteryApp/keralalottery_*.jpg
+CRAFT_model/
+easyocr_models/
