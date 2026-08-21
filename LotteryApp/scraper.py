@@ -65,8 +65,17 @@ def parse_result_from_html(html_content):
                 continue
             if el.startswith("(") and el.endswith(")"):
                 continue
+            
+            # Ignore generic text lines that might contain numbers (like dates, agent info)
+            ignore_words = ['date:', 'result', 'agent', 'agency']
+            if any(w in el.lower() for w in ignore_words):
+                continue
                 
-            matches = re.findall(r'[A-Za-z]{2}\s?\d{6}|\b\d{4}\b', el)
+            if current_prize_name in ["1st Prize", "2nd Prize", "3rd Prize", "Consolation Prize"]:
+                matches = re.findall(r'[A-Za-z]{2}\s?\d{6}', el)
+            else:
+                matches = re.findall(r'\b\d{4}\b', el)
+                
             if matches:
                 prizes[current_prize_name].extend(matches)
                 
