@@ -143,100 +143,22 @@ def save_result(data):
 
 def run_scraper_cycle():
     """
-    Fetches latest entries, determines today's result state (active draw),
-    and aggregates the last 3 completed draws for the history.
+    Fetches latest entries, extracts the most recent 7 completed draws,
+    and saves them as a JSON list.
     """
-    # Calculate Indian Standard Time (IST)
-    tz_ist = timezone(timedelta(hours=5, minutes=30))
-    now_ist = datetime.now(tz_ist)
-    today_str = now_ist.strftime("%d-%m-%Y")
-    
     parsed_draws = get_feed_data()
     if not parsed_draws:
         print("[Scraper] No draw data retrieved from feed.")
         return
         
-    active_display = {}
-    history = []
+    # Filter only completed draws (where firstPrize is found)
+    completed_draws = [d for d in parsed_draws if d.get("firstPrize")]
     
-    # 1. Filter entries matching today's date
-    today_entries = [d for d in parsed_draws if d["date"] == today_str]
+    # Keep only the latest 7 results
+    latest_seven = completed_draws[:7]
     
-    if today_entries:
-        # Today's lottery draw has a post!
-        # Find if any of today's post entries contain a successfully drawn 1st prize
-        today_completed = [d for d in today_entries if d["firstPrize"]]
-        
-        # Other previous completed draws for the history list
-        previous_completed = [d for d in parsed_draws if d["date"] != today_str and d["firstPrize"]]
-        
-        if today_completed:
-            # Draw is finished! Take the most recent completed result
-            today_draw = today_completed[0]
-            active_display = {
-                "firstPrize": today_draw["firstPrize"],
-                "lottery": f"{today_draw['lottery']} ({today_draw['code']})",
-                "date": today_draw["date"]
-            }
-        else:
-            # Draw has not finished yet (shows "Waiting...")
-            today_draw = today_entries[0]
-            active_display = {
-                "firstPrize": "Waiting for Live Result...",
-                "lottery": f"{today_draw['lottery']} ({today_draw['code']})",
-                "date": today_draw["date"]
-            }
-            
-        # History is the last 3 completed draws
-        history = previous_completed[:3]
-    else:
-        # Today's post is not published yet. Check time to see if draw is expected today.
-        # Draws start at 3:00 PM (15:00) IST and conclude around 4:30 PM (16:30) IST.
-        completed_draws = [d for d in parsed_draws if d["firstPrize"]]
-        
-        if now_ist.hour >= 16 or (now_ist.hour == 16 and now_ist.minute >= 30):
-            # It's past draw hours, and no today's post exists -> likely no draw today (Sunday/Holiday).
-            # Show the latest completed draw as the active display.
-            if completed_draws:
-                latest = completed_draws[0]
-                active_display = {
-                    "firstPrize": latest["firstPrize"],
-                    "lottery": f"{latest['lottery']} ({latest['code']})",
-                    "date": latest["date"]
-                }
-                history = completed_draws[1:4]
-        else:
-            # It is morning/afternoon, so today's draw is expected but hasn't started yet.
-            # Show Today's Draw in Waiting state.
-            active_display = {
-                "firstPrize": "Waiting for Live Result...",
-                "lottery": "Today's Draw",
-                "date": today_str
-            }
-            history = completed_draws[:3]
-            
-    # Load previous cache to preserve updated time if no state change occurred
-    current_cache = load_result()
-    
-    # Save the aggregated output
-    now_time_str = now_ist.strftime("%I:%M %p").lstrip('0')
-    
-    # Update timestamp only if the winning number has changed, or if it is the first write
-    if current_cache.get("firstPrize") != active_display["firstPrize"]:
-        updated_time = now_time_str
-    else:
-        updated_time = current_cache.get("updated", now_time_str)
-        
-    save_data = {
-        "firstPrize": active_display["firstPrize"],
-        "updated": updated_time,
-        "lottery": active_display["lottery"],
-        "date": active_display["date"],
-        "history": history
-    }
-    
-    save_result(save_data)
-    print(f"[Scraper] Result updated in JSON. Active: {save_data['firstPrize']} ({save_data['lottery']})")
+    save_result(latest_seven)
+    print(f"[Scraper] Result updated in JSON. {len(latest_seven)} records saved.")
 
 if __name__ == "__main__":
     run_scraper_cycle()
