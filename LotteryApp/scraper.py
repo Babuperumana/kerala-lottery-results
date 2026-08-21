@@ -35,7 +35,6 @@ def parse_result_from_html(html_content):
     
     prizes = {}
     current_prize_name = None
-    first_prize = None
     
     prize_keywords = [
         "1st Prize", "2nd Prize", "3rd Prize", "4th Prize", "5th Prize", 
@@ -48,7 +47,10 @@ def parse_result_from_html(html_content):
             if kw.lower() in el.lower() and len(el) < 60 and "repeated" not in el.lower() and "structure" not in el.lower():
                 if kw not in prizes:
                     current_prize_name = kw
-                    prizes[current_prize_name] = []
+                    prizes[current_prize_name] = {
+                        "details": el.strip(),
+                        "numbers": []
+                    }
                     found_header = True
                 else:
                     # We already parsed this prize, so ignore this duplicate header
@@ -77,15 +79,9 @@ def parse_result_from_html(html_content):
                 matches = re.findall(r'\b\d{4}\b', el)
                 
             if matches:
-                prizes[current_prize_name].extend(matches)
+                prizes[current_prize_name]["numbers"].extend(matches)
                 
-    if "1st Prize" in prizes and prizes["1st Prize"]:
-        for p in prizes["1st Prize"]:
-            if re.match(r'[A-Za-z]{2}\s?\d{6}', p):
-                first_prize = p
-                break
-                
-    return first_prize, prizes
+    return prizes
 
 def get_feed_data():
     """
@@ -118,8 +114,8 @@ def get_feed_data():
             if not html_content:
                 continue
                 
-            # Extract winning 1st prize and all prizes
-            first_prize, all_prizes = parse_result_from_html(html_content)
+            # Extract all prizes
+            all_prizes = parse_result_from_html(html_content)
             
             # Extract date (DD-MM-YYYY)
             date_match = re.search(r'\b(\d{2})-(\d{2})-(\d{4})\b', title)
@@ -146,7 +142,6 @@ def get_feed_data():
                 "lottery": lottery_name,
                 "code": draw_code,
                 "date": draw_date,
-                "firstPrize": first_prize,
                 "prizes": all_prizes
             })
             
@@ -187,8 +182,8 @@ def run_scraper_cycle():
         print("[Scraper] No draw data retrieved from feed.")
         return
         
-    # Filter only completed draws (where firstPrize is found)
-    completed_draws = [d for d in parsed_draws if d.get("firstPrize")]
+    # Filter only completed draws (where 1st Prize is found)
+    completed_draws = [d for d in parsed_draws if d.get("prizes") and "1st Prize" in d["prizes"] and d["prizes"]["1st Prize"]["numbers"]]
     
     # Keep only the latest 7 results
     latest_seven = completed_draws[:7]
