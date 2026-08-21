@@ -1,6 +1,6 @@
-# Kerala State Lottery Live 1st Prize Tracker
+# Kerala State Lottery Live Prize Tracker
 
-A web-based dashboard and scraper designed to monitor and display the Kerala State Lottery 1st prize winning numbers in real-time. It retrieves live results from target blog feeds, updates a local data cache, and serves a modern single-page dashboard.
+A web-based dashboard and scraper designed to monitor and display the Kerala State Lottery prize winning numbers in real-time. It retrieves live results from target blog feeds, updates a local data cache, and serves a modern single-page dashboard.
 
 ---
 
