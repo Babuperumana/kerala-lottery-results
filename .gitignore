@@ -15,7 +15,6 @@ __pycache__/
 Thumbs.db
 
 # App databases/runtime caches
-LotteryApp/data/result.json
 LotteryApp/temp_cycle.jpg
 LotteryApp/temp_capture.jpg
 LotteryApp/frame.jpg
