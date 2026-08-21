@@ -4,7 +4,7 @@ on:
   schedule:
     # 09:30 AM to 11:00 AM UTC corresponds to 03:00 PM to 04:30 PM IST
     # Runs every 5 minutes from 09:30 to 09:55
-    - cron: '30/5 9 * * *'
+    - cron: '30-59/5 9 * * *'
     # Runs every 5 minutes from 10:00 to 10:55
     - cron: '*/5 10 * * *'
     # Runs exactly at 11:00
