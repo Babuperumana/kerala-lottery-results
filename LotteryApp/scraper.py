@@ -45,11 +45,15 @@ def parse_result_from_html(html_content):
     for el in all_elements:
         found_header = False
         for kw in prize_keywords:
-            if kw.lower() in el.lower() and "rs." in el.lower():
-                current_prize_name = kw
-                if current_prize_name not in prizes:
+            if kw.lower() in el.lower() and len(el) < 60 and "repeated" not in el.lower() and "structure" not in el.lower():
+                if kw not in prizes:
+                    current_prize_name = kw
                     prizes[current_prize_name] = []
-                found_header = True
+                    found_header = True
+                else:
+                    # We already parsed this prize, so ignore this duplicate header
+                    current_prize_name = None
+                    found_header = True
                 break
                 
         if found_header:
