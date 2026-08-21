@@ -7,7 +7,7 @@ from datetime import datetime, timezone, timedelta
 
 # Define paths relative to this script's directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-RESULT_FILE = os.path.join(BASE_DIR, 'data', 'result.json')
+RESULT_FILE = os.path.join(BASE_DIR, 'result.json')
 
 # Target patterns
 TICKET_PATTERN = re.compile(r'\b([A-Za-z]{2})\s?(\d{6})\b')
