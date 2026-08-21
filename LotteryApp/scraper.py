@@ -22,8 +22,8 @@ LOTTERY_NAMES = [
 
 def parse_result_from_html(html_content):
     """
-    Parse the 1st prize ticket number from the post body HTML.
-    Finds the '1st Prize' text label and locates the closest ticket pattern after it.
+    Parse the 1st prize and all other prizes from the post body HTML.
+    Returns a tuple of (first_prize, all_prizes_dict).
     """
     soup = BeautifulSoup(html_content, 'html.parser')
     
@@ -31,26 +31,48 @@ def parse_result_from_html(html_content):
     for s in soup(["script", "style"]):
         s.decompose()
         
-    all_elements = list(soup.find_all(string=True))
+    all_elements = [el.strip() for el in soup.find_all(string=True) if el.strip()]
     
+    prizes = {}
+    current_prize_name = None
     first_prize = None
-    for idx, el in enumerate(all_elements):
-        text_lower = el.lower().strip()
-        if "1st prize" in text_lower:
-            # Look ahead in the DOM (up to 20 text elements) for a ticket number match
-            for j in range(1, 20):
-                if idx + j < len(all_elements):
-                    candidate = all_elements[idx + j].strip()
-                    if not candidate:
-                        continue
-                    match = TICKET_PATTERN.search(candidate)
-                    if match:
-                        # Format standard ticket number: 'XX 123456'
-                        first_prize = f"{match.group(1).upper()} {match.group(2)}"
-                        break
-            if first_prize:
+    
+    prize_keywords = [
+        "1st Prize", "2nd Prize", "3rd Prize", "4th Prize", "5th Prize", 
+        "6th Prize", "7th Prize", "8th Prize", "9th Prize", "Consolation Prize"
+    ]
+    
+    for el in all_elements:
+        found_header = False
+        for kw in prize_keywords:
+            if kw.lower() in el.lower() and "rs." in el.lower():
+                current_prize_name = kw
+                if current_prize_name not in prizes:
+                    prizes[current_prize_name] = []
+                found_header = True
                 break
-    return first_prize
+                
+        if found_header:
+            continue
+            
+        if current_prize_name:
+            if "prize structure" in el.lower() or "repeated numbers" in el.lower():
+                current_prize_name = None
+                continue
+            if el.startswith("(") and el.endswith(")"):
+                continue
+                
+            matches = re.findall(r'[A-Za-z]{2}\s?\d{6}|\b\d{4}\b', el)
+            if matches:
+                prizes[current_prize_name].extend(matches)
+                
+    if "1st Prize" in prizes and prizes["1st Prize"]:
+        for p in prizes["1st Prize"]:
+            if re.match(r'[A-Za-z]{2}\s?\d{6}', p):
+                first_prize = p
+                break
+                
+    return first_prize, prizes
 
 def get_feed_data():
     """
@@ -83,8 +105,8 @@ def get_feed_data():
             if not html_content:
                 continue
                 
-            # Extract winning 1st prize
-            first_prize = parse_result_from_html(html_content)
+            # Extract winning 1st prize and all prizes
+            first_prize, all_prizes = parse_result_from_html(html_content)
             
             # Extract date (DD-MM-YYYY)
             date_match = re.search(r'\b(\d{2})-(\d{2})-(\d{4})\b', title)
@@ -111,7 +133,8 @@ def get_feed_data():
                 "lottery": lottery_name,
                 "code": draw_code,
                 "date": draw_date,
-                "firstPrize": first_prize
+                "firstPrize": first_prize,
+                "prizes": all_prizes
             })
             
         return parsed_draws
