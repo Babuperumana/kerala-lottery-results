@@ -41,14 +41,25 @@ def parse_result_from_html(html_content):
         "6th Prize", "7th Prize", "8th Prize", "9th Prize", "Consolation Prize"
     ]
     
-    for el in all_elements:
+    for i, el in enumerate(all_elements):
         found_header = False
         for kw in prize_keywords:
             if kw.lower() in el.lower() and len(el) < 60 and "repeated" not in el.lower() and "structure" not in el.lower():
                 if kw not in prizes:
                     current_prize_name = kw
+                    
+                    details_str = el.strip()
+                    lookahead = 1
+                    while i + lookahead < len(all_elements) and lookahead <= 3:
+                        next_el = all_elements[i + lookahead].strip()
+                        if next_el == "₹" or next_el == ":" or "Rs" in next_el or "/-" in next_el or "Lakhs" in next_el or "Crore" in next_el or re.match(r'^[\d,]+/-', next_el):
+                            details_str += " " + next_el
+                            lookahead += 1
+                        else:
+                            break
+                            
                     prizes[current_prize_name] = {
-                        "details": el.strip(),
+                        "details": details_str,
                         "numbers": []
                     }
                     found_header = True
@@ -62,15 +73,22 @@ def parse_result_from_html(html_content):
             continue
             
         if current_prize_name:
-            if "prize structure" in el.lower() or "repeated numbers" in el.lower():
+            # If we hit footer text, stop parsing prizes completely
+            footer_keywords = ['prize structure', 'repeated numbers', 'next ', 'kerala lottery result', 'date:', 'draw results']
+            if any(w in el.lower() for w in footer_keywords):
                 current_prize_name = None
                 continue
+                
             if el.startswith("(") and el.endswith(")"):
                 continue
             
             # Ignore generic text lines that might contain numbers (like dates, agent info)
-            ignore_words = ['date:', 'result', 'agent', 'agency']
+            ignore_words = ['result', 'agent', 'agency', 'draw']
             if any(w in el.lower() for w in ignore_words):
+                continue
+                
+            # Explicitly skip if element is a standalone date
+            if re.match(r'^\d{2}[-/.]\d{2}[-/.]\d{4}$', el.strip()):
                 continue
                 
             if current_prize_name in ["1st Prize", "2nd Prize", "3rd Prize", "Consolation Prize"]:

@@ -5,13 +5,13 @@
     "date": "24-08-2026",
     "prizes": {
       "1st Prize": {
-        "details": "1st Prize :",
+        "details": "1st Prize : \u20b9 1,00,00,000/- [1 Crore]",
         "numbers": [
           "BW 585405"
         ]
       },
       "Consolation Prize": {
-        "details": "Consolation Prize",
+        "details": "Consolation Prize \u20b9 5,000/-",
         "numbers": [
           "BN 585405",
           "BO 585405",
@@ -27,19 +27,19 @@
         ]
       },
       "2nd Prize": {
-        "details": "2nd Prize",
+        "details": "2nd Prize \u20b9 30,00,000/- [30 Lakhs]",
         "numbers": [
           "BW 364280"
         ]
       },
       "3rd Prize": {
-        "details": "3rd Prize",
+        "details": "3rd Prize \u20b9 5,00,000/-\u00a0[5 Lakhs]",
         "numbers": [
           "BZ 567138"
         ]
       },
       "4th Prize": {
-        "details": "4th Prize:",
+        "details": "4th Prize: \u20b9 5,000/-",
         "numbers": [
           "1247",
           "1762",
@@ -63,7 +63,7 @@
         ]
       },
       "5th Prize": {
-        "details": "5th Prize",
+        "details": "5th Prize \u20b9 2,000/-",
         "numbers": [
           "2767",
           "4131",
@@ -74,7 +74,7 @@
         ]
       },
       "6th Prize": {
-        "details": "6th Prize",
+        "details": "6th Prize \u20b9 1,000/-",
         "numbers": [
           "0324",
           "1125",
@@ -104,7 +104,7 @@
         ]
       },
       "7th Prize": {
-        "details": "7th Prize",
+        "details": "7th Prize \u20b9 500/-",
         "numbers": [
           "0104",
           "0311",
@@ -185,7 +185,7 @@
         ]
       },
       "8th Prize": {
-        "details": "8th Prize",
+        "details": "8th Prize \u20b9 200/-",
         "numbers": [
           "0559",
           "0811",
@@ -284,7 +284,7 @@
         ]
       },
       "9th Prize": {
-        "details": "9th Prize",
+        "details": "9th Prize \u20b9 100/-",
         "numbers": [
           "0095",
           "0117",
@@ -429,8 +429,7 @@
           "9225",
           "9657",
           "9714",
-          "9935",
-          "2026"
+          "9935"
         ]
       }
     }
@@ -869,8 +868,7 @@
           "9785",
           "9881",
           "9886",
-          "9998",
-          "2026"
+          "9998"
         ]
       }
     }
@@ -881,13 +879,13 @@
     "date": "22-08-2026",
     "prizes": {
       "1st Prize": {
-        "details": "1st Prize :",
+        "details": "1st Prize : \u20b9 1,00,00,000/- [1 Crore]",
         "numbers": [
           "KW 159168"
         ]
       },
       "Consolation Prize": {
-        "details": "Consolation Prize",
+        "details": "Consolation Prize \u20b9 5,000/-",
         "numbers": [
           "KN 159168",
           "KO 159168",
@@ -903,19 +901,19 @@
         ]
       },
       "2nd Prize": {
-        "details": "2nd Prize",
+        "details": "2nd Prize \u20b9 25,00,000/- [25 Lakhs]",
         "numbers": [
           "KU 488454"
         ]
       },
       "3rd Prize": {
-        "details": "3rd Prize",
+        "details": "3rd Prize \u20b9 10,00,000/-\u00a0[10 Lakhs]",
         "numbers": [
           "KR 566737"
         ]
       },
       "4th Prize": {
-        "details": "4th Prize:",
+        "details": "4th Prize: \u20b9 5,000/-",
         "numbers": [
           "0177",
           "1431",
@@ -939,7 +937,7 @@
         ]
       },
       "5th Prize": {
-        "details": "5th Prize:",
+        "details": "5th Prize: \u20b9 2,000/-",
         "numbers": [
           "3027",
           "5527",
@@ -950,7 +948,7 @@
         ]
       },
       "6th Prize": {
-        "details": "6th Prize",
+        "details": "6th Prize \u20b9 1,000/-",
         "numbers": [
           "1007",
           "1232",
@@ -980,7 +978,7 @@
         ]
       },
       "7th Prize": {
-        "details": "7th Prize",
+        "details": "7th Prize \u20b9 500/-",
         "numbers": [
           "0192",
           "0681",
@@ -1061,7 +1059,7 @@
         ]
       },
       "8th Prize": {
-        "details": "8th Prize",
+        "details": "8th Prize \u20b9 200/-",
         "numbers": [
           "0122",
           "0155",
@@ -1158,7 +1156,7 @@
         ]
       },
       "9th Prize": {
-        "details": "9th Prize",
+        "details": "9th Prize \u20b9 100/-",
         "numbers": [
           "0181",
           "0185",
@@ -1303,8 +1301,7 @@
           "9622",
           "9919",
           "9969",
-          "9986",
-          "2026"
+          "9986"
         ]
       }
     }
@@ -1748,13 +1745,13 @@
     "date": "20-08-2026",
     "prizes": {
       "1st Prize": {
-        "details": "1st Prize",
+        "details": "1st Prize \u20b9 1,00,00,000/- [1 Crore]",
         "numbers": [
           "PK 789430"
         ]
       },
       "Consolation Prize": {
-        "details": "Consolation Prize",
+        "details": "Consolation Prize \u20b9 5,000/-",
         "numbers": [
           "PA 789430",
           "PB 789430",
@@ -1770,19 +1767,19 @@
         ]
       },
       "2nd Prize": {
-        "details": "2nd Prize",
+        "details": "2nd Prize \u20b9 30,00,000/- [30 Lakhs]",
         "numbers": [
           "PJ 569568"
         ]
       },
       "3rd Prize": {
-        "details": "3rd Prize",
+        "details": "3rd Prize \u20b9 5,00,000/-\u00a0[5 Lakhs]",
         "numbers": [
           "PE 816580"
         ]
       },
       "4th Prize": {
-        "details": "4th Prize",
+        "details": "4th Prize \u20b9 5,000/-",
         "numbers": [
           "0289",
           "3107",
@@ -1806,7 +1803,7 @@
         ]
       },
       "5th Prize": {
-        "details": "5th Prize",
+        "details": "5th Prize \u20b9 2,000/-",
         "numbers": [
           "0981",
           "3195",
@@ -1817,7 +1814,7 @@
         ]
       },
       "6th Prize": {
-        "details": "6th Prize",
+        "details": "6th Prize \u20b9 1,000/-",
         "numbers": [
           "0591",
           "1034",
@@ -1847,7 +1844,7 @@
         ]
       },
       "7th Prize": {
-        "details": "7th Prize",
+        "details": "7th Prize \u20b9 500/-",
         "numbers": [
           "0310",
           "0320",
@@ -1928,7 +1925,7 @@
         ]
       },
       "8th Prize": {
-        "details": "8th Prize",
+        "details": "8th Prize \u20b9 200/-",
         "numbers": [
           "0253",
           "0264",
@@ -2017,7 +2014,7 @@
         ]
       },
       "9th Prize": {
-        "details": "9th Prize",
+        "details": "9th Prize \u20b9 100/-",
         "numbers": [
           "0015",
           "0134",
@@ -2174,9 +2171,7 @@
           "9833",
           "9836",
           "9890",
-          "9899",
-          "2026",
-          "2026"
+          "9899"
         ]
       }
     }
@@ -2607,8 +2602,7 @@
           "9831",
           "9844",
           "9879",
-          "9927",
-          "2026"
+          "9927"
         ]
       }
     }
@@ -3045,8 +3039,7 @@
           "9890",
           "9930",
           "9988",
-          "9994",
-          "2026"
+          "9994"
         ]
       }
     }

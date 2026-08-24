@@ -1,48 +1,29 @@
-# Kerala State Lottery Live Prize Tracker
+# Kerala State Lottery Results Scraper
 
-A web-based dashboard and scraper designed to monitor and display the Kerala State Lottery prize winning numbers in real-time. It retrieves live results from target blog feeds, updates a local data cache, and serves a modern single-page dashboard.
+A Python script designed to scrape and extract the latest Kerala State Lottery prize winning numbers. It retrieves live results from target blog feeds, parses the data, and saves the 7 most recent completed draws to a local JSON file.
 
 ---
 
 ## Features
 
-- **Live Scraping**: Runs a background worker that polls the Blogger feed every 20 seconds to fetch updates during active draw hours.
-- **Parsing and Extraction**: Extracts the first prize ticket number, date, draw code (e.g., SS-527), and name of the lottery using BeautifulSoup and regular expressions.
-- **Web Dashboard**: Displays the active draw status with a countdown timer showing the next automated refresh.
-- **State Handling**: Transitions automatically between a waiting state (when a draw is active but results are not yet published) and a completed state (when the winning ticket is extracted).
-- **Recent History**: Keeps track of the last three lottery draws.
-- **Background Scheduler**: Managed via APScheduler, configured to run safely within Flask's development server without spawning duplicate threads.
+- **Feed Polling**: Fetches the latest entries from the Blogger feed.
+- **Parsing and Extraction**: Extracts the first prize, consolation prizes, and other prize tiers, along with the date, draw code (e.g., SS-527), and name of the lottery using BeautifulSoup and regular expressions.
+- **Data Caching**: Saves the most recent 7 completed draws into a `result.json` file.
 
 ---
 
 ## Technology Stack
 
-### Backend
 - **Python 3**: Application runtime.
-- **Flask**: Serves the frontend web pages and API.
-- **APScheduler**: Manages the periodic scraping cycles.
 - **BeautifulSoup4 & Requests**: Handles fetching and parsing of HTML/feed data.
-
-### Frontend
-- **HTML5 & CSS3**: Responsive styling, custom fonts, layout, and visual transitions.
-- **Vanilla JavaScript**: Controls the polling timer, fetches data, and updates page content.
-- **Google Fonts**: Uses Outfit for general layout text and Rajdhani for the large prize numbers.
 
 ---
 
 ## Project Structure
 
 ```text
-├── LotteryApp/
-│   ├── app.py              # Flask server and background scheduler
-│   ├── scraper.py          # Data fetching and parsing logic
-│   ├── templates/
-│   │   └── index.html      # Main dashboard HTML template
-│   ├── static/
-│   │   ├── style.css       # Layout styles and animations
-│   │   └── script.js       # Client-side polling and DOM updates
-│   └── data/
-│       └── result.json     # JSON cache containing active draw and history
+├── scraper.py              # Data fetching and parsing logic
+├── result.json             # JSON cache containing the latest completed draws
 ├── requirements.txt        # Python package dependencies
 ├── .gitignore              # Git ignore rules
 └── README.md               # Project documentation
@@ -80,50 +61,42 @@ A web-based dashboard and scraper designed to monitor and display the Kerala Sta
    pip install -r requirements.txt
    ```
 
-4. **Run the Server**
+4. **Run the Scraper**
    ```bash
-   python LotteryApp/app.py
+   python scraper.py
    ```
-   This will start both the Flask web server on port `5000` and the background scraper thread.
-
-5. **Open the Dashboard**
-   Navigate to [http://127.0.0.1:5000](http://127.0.0.1:5000) in your web browser.
+   This will fetch the latest results and save them to `result.json`. You can set this script up to run periodically using a cron job or task scheduler.
 
 ---
 
-## API Endpoints
+## Output Data Format
 
-### GET /api/result
+The scraper saves the data as a JSON list in `result.json`.
 
-Returns the current active draw status and a list of the three most recent historical draws.
-
-**Example Response:**
+**Example Output:**
 ```json
-{
-  "firstPrize": "ST 308060",
-  "updated": "07:59 PM",
-  "lottery": "Sthree Sakthi (SS-527)",
-  "date": "07-07-2026",
-  "history": [
-    {
-      "lottery": "Bhagyathara",
-      "code": "BT-61",
-      "date": "06-07-2026",
-      "firstPrize": "BG 906028"
-    },
-    ...
-  ]
-}
+[
+  {
+    "lottery": "Bhagyathara",
+    "code": "BT-68",
+    "date": "24-08-2026",
+    "prizes": {
+      "1st Prize": {
+        "details": "1st Prize :",
+        "numbers": [
+          "BW 585405"
+        ]
+      },
+      "Consolation Prize": {
+        "details": "Consolation Prize",
+        "numbers": [
+          "BN 585405"
+        ]
+      }
+    }
+  }
+]
 ```
-
----
-
-## Draw Schedule and Behavior
-
-Kerala State Lottery draws generally start around **3:00 PM IST** daily and conclude around **4:30 PM IST**.
-- During the draw window, if a blog post exists for the day's lottery but the final result is pending, the dashboard displays a "Waiting for Live Result..." status with a loading indicator.
-- Once the first prize winning ticket is published on the source feed, the scraper updates the JSON cache, the frontend displays the new prize number, and the previous active draw is added to the history view.
-- Outside of active draw hours, the dashboard displays the most recent completed draw.
 
 ---
 
